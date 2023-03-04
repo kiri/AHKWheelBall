@@ -81,8 +81,7 @@ An example of this is the AHK help file, which uses the Internet Explorer_Server
 
 mouse_Threshold = 1 ; the number of pixels the mouse must move for a scroll tick to occur
 ;;MakeChord("LButton", "RButton", "scrollChord", 20) ; Chord to activate middle click or scrolling. See MakeChord.ahk for instructions
-;;scroll_Hotkey = RButton ; Hotkey to activate middle click or scrolling
-scroll_Hotkey = F13 ; Hotkey to activate middle click or scrolling
+scroll_Hotkey = RButton ; Hotkey to activate middle click or scrolling
 
 ;; Added with AHKWheelBall
 
@@ -103,14 +102,15 @@ Process, Priority, , Realtime
 Gui, +LastFound
 hGui := WinExist()
 
+#IfWinNotActive ahk_exe vmware-view.exe
 ;Intercept WM_INPUT messages
 OnMessage(0x00FF, "InputMsg")
 
 SetDefaultMouseSpeed, 0
 CoordMode, Mouse, Screen
-
 HotKey, %scroll_Hotkey%, scrollChord
 HotKey, %scroll_Hotkey% Up, scrollChord_Up
+
 return
 
 scrollChord:
@@ -126,8 +126,8 @@ scrollChord_Up:
   ToolTip
   BlockInput, MouseMoveOff
   AHKHID_Register(1, 2, 0, RIDEV_REMOVE)
-  ;;if mouse_Moved = f
-    ;;MouseClick, RIGHT
+  if mouse_Moved = f
+    MouseClick, RIGHT
 return
 
 InputMsg(wParam, lParam) {
